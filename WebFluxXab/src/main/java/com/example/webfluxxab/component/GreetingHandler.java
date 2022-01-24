@@ -15,7 +15,16 @@ import java.util.Map;
 @Component
 public class GreetingHandler {
 
+    /* http://localhost:8989/hello?start=1&count=2 */
+
     public Mono<ServerResponse> hello(ServerRequest request) {
+
+        Long start = request.queryParam("start")
+                .map(Long::valueOf)
+                .orElse(0L);
+        Long count = request.queryParam("count")
+                .map(Long::valueOf)
+                .orElse(3L);
 
         Flux<Message> data = Flux
                 .just(
@@ -25,6 +34,8 @@ public class GreetingHandler {
                         "Fourth post",
                         "Fifth post"
                 )
+                .skip(start)
+                .take(count)
                 .map(Message::new);
 
         return ServerResponse
