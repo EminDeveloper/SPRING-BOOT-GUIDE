@@ -28,9 +28,11 @@ public class GreetingRouter {
                 .andRoute(
                         GET("/"),
                         serverRequest -> {
+                            String user = serverRequest.queryParam("user")
+                                    .orElse("Nobody");
                             return ServerResponse
                                     .ok()
-                                    .render("index", Map.of("user", ""));
+                                    .render("index", Map.of("user", user));
 //                                    .contentType(MediaType.TEXT_PLAIN)
 //                                    .body(BodyInserters.fromValue("Main Page"));
                         }
