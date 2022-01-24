@@ -27,15 +27,7 @@ public class GreetingRouter {
                 .route(route, greetingHandler::hello)
                 .andRoute(
                         GET("/"),
-                        serverRequest -> {
-                            String user = serverRequest.queryParam("user")
-                                    .orElse("Nobody");
-                            return ServerResponse
-                                    .ok()
-                                    .render("index", Map.of("user", user));
-//                                    .contentType(MediaType.TEXT_PLAIN)
-//                                    .body(BodyInserters.fromValue("Main Page"));
-                        }
+                        greetingHandler::index
                 );
     }
 }
