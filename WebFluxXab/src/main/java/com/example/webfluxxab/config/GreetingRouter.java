@@ -8,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.*;
 
+import java.util.Map;
+
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 
@@ -28,10 +30,9 @@ public class GreetingRouter {
                         serverRequest -> {
                             return ServerResponse
                                     .ok()
-                                    .contentType(MediaType.TEXT_PLAIN)
-                                    .body(
-                                            BodyInserters.fromValue("Main Page")
-                                    );
+                                    .render("index", Map.of("user", ""));
+//                                    .contentType(MediaType.TEXT_PLAIN)
+//                                    .body(BodyInserters.fromValue("Main Page"));
                         }
                 );
     }

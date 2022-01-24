@@ -19,7 +19,9 @@ public class GreetingHandler {
         BodyInserter<Greeting, ReactiveHttpOutputMessage> body =
                 BodyInserters.fromValue(new Greeting("Hello, Spring!"));
 
-        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
+        return ServerResponse
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(body);
     }
 }
