@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class AuthenticationManager implements ReactiveAuthenticationManager {
-
     private final JwtUtil jwtUtil;
 
     public AuthenticationManager(JwtUtil jwtUtil) {
@@ -28,29 +27,26 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
 
         try {
             username = jwtUtil.extractUsername(authToken);
-        }catch (Exception e){
+        } catch (Exception e) {
             username = null;
             System.out.println(e);
         }
 
-        if (username != null && jwtUtil.validateToken(authToken)){
+        if (username != null && jwtUtil.validateToken(authToken)) {
             Claims claims = jwtUtil.getClaimsFromToken(authToken);
-            List role = claims.get("role", List.class);
+            List<String> role = claims.get("role", List.class);
             List<SimpleGrantedAuthority> authorities = role.stream()
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
-
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     username,
                     null,
                     authorities
             );
 
-            return Mono.just(authentication);
-        } else{
+            return Mono.just(authenticationToken);
+        } else {
             return Mono.empty();
         }
-
-        return null;
     }
 }
